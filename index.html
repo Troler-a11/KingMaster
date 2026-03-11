@@ -13,7 +13,7 @@
             --neon-blue: #00f2ff;
             --neon-green: #00ff88;
             --neon-red: #ff3131;
-            --glass: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -25,13 +25,11 @@
             font-family: 'Inter', -apple-system, sans-serif;
             overflow: hidden;
             height: 100vh;
-            user-select: none;
         }
 
-        /* --- UI UTILS --- */
         .hidden { display: none !important; }
 
-        /* --- OVERLAYS --- */
+        /* --- UI OVERLAY --- */
         #game-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -39,6 +37,7 @@
             z-index: 1000;
             display: flex;
             flex-direction: column;
+            padding-top: env(safe-area-inset-top);
         }
 
         .back-btn {
@@ -47,33 +46,33 @@
             background: var(--glass);
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px 20px;
-            border-radius: 12px;
-            z-index: 1010;
-            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 8px;
+            z-index: 1100;
         }
 
         /* --- HEADER --- */
         .main-header {
-            height: 100px;
+            height: 120px;
             padding: 20px;
+            background: linear-gradient(180deg, #111 0%, transparent 100%);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
         }
 
         .balance-container {
-            background: rgba(255,215,0,0.1);
+            background: rgba(0,0,0,0.6);
             border: 2px solid var(--gold);
             border-radius: 40px;
-            padding: 12px 30px;
+            padding: 10px 25px;
             display: flex;
             align-items: center;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
 
         .balance-val {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
             color: var(--gold);
         }
@@ -81,107 +80,114 @@
         /* --- NAVIGATION --- */
         .nav-dock {
             position: fixed;
-            bottom: 25px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 92%;
-            height: 70px;
-            background: rgba(20, 20, 20, 0.9);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
+            width: 90%;
+            height: 75px;
+            background: rgba(15, 15, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             border: 1px solid rgba(255,255,255,0.1);
-            z-index: 950;
+            z-index: 900;
         }
 
         .nav-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #555;
-            font-size: 11px;
+            color: #666;
+            font-size: 10px;
             font-weight: bold;
-            transition: 0.3s;
         }
 
         .nav-btn.active { color: var(--gold); }
-        .nav-btn svg { width: 26px; height: 26px; margin-bottom: 4px; }
+        .nav-btn svg { width: 24px; height: 24px; margin-bottom: 5px; }
 
         /* --- DASHBOARD --- */
         .scroll-area {
-            height: calc(100vh - 100px);
+            height: calc(100vh - 130px);
             overflow-y: auto;
             padding: 20px;
             padding-bottom: 120px;
         }
 
         .game-card {
-            background: linear-gradient(145deg, #151515, #0a0a0a);
-            border-radius: 22px;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.03);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
 
         .btn-play {
             background: var(--gold);
-            color: #000;
+            color: black;
             border: none;
-            padding: 14px;
+            padding: 12px 0;
             width: 100%;
-            border-radius: 14px;
+            border-radius: 12px;
             font-weight: 900;
-            font-size: 16px;
             margin-top: 15px;
             cursor: pointer;
-            box-shadow: 0 4px 0 #b8860b;
-            transition: 0.1s;
         }
-        .btn-play:active { transform: translateY(3px); box-shadow: 0 1px 0 #b8860b; }
 
-        /* --- DICE GAME --- */
-        .dice-table {
+        /* --- DICE & RPS --- */
+        .dice-table, .rps-table {
             flex: 1;
-            background: radial-gradient(circle, #0d3d2a 0%, #051a0d 100%);
+            background: radial-gradient(circle, #0a3d1d 0%, #051a0d 100%);
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding: 60px 0;
+            padding: 40px 0;
         }
+
         .cube {
-            width: 65px; height: 65px;
-            background: #fff; border-radius: 12px;
+            width: 60px; height: 60px;
+            background: #eee; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 34px; font-weight: 900; color: #000;
-            box-shadow: 0 8px 0 #ccc;
+            font-size: 32px; font-weight: 900; color: #111;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         /* --- FISHING --- */
         #fishing-arena {
             flex: 1;
-            background: linear-gradient(180deg, #001220 0%, #004e92 100%);
+            background: linear-gradient(180deg, #001a33 0%, #0066cc 100%);
             position: relative;
-            overflow: hidden;
         }
+
         #hook-btn {
             position: absolute;
-            width: 90px; height: 90px;
-            background: rgba(255,255,255,0.2);
-            border: 4px solid var(--gold);
+            width: 80px; height: 80px;
+            background: white;
+            border: 4px solid var(--neon-red);
             border-radius: 50%;
             display: none;
-            z-index: 1200;
+            z-index: 1050;
+            box-shadow: 0 0 20px white;
             animation: pulse 0.5s infinite;
         }
 
-        /* --- RPS --- */
-        .rps-hand { font-size: 100px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .rps-btn { font-size: 45px; background: none; border: none; padding: 10px; }
+        /* --- WHEEL --- */
+        #wheel-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;
+        }
+        .wheel-wrap {
+            position: relative; width: 300px; height: 300px;
+        }
+        #wheel-canvas { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.1, 0, 0.1, 1); }
+        .wheel-pointer {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent;
+            border-top: 30px solid var(--gold); z-index: 10;
+        }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -189,32 +195,19 @@
     <div id="main-ui">
         <header class="main-header">
             <div class="balance-container">
-                <span style="font-size: 22px; margin-right: 12px;">👑</span>
+                <span style="font-size: 20px; margin-right: 10px;">👑</span>
                 <span class="balance-val" id="global-balance">10.00</span>
             </div>
         </header>
 
         <main class="scroll-area" id="view-profile">
             <div class="game-card">
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <div style="width:60px; height:60px; border-radius:50%; border:2px solid var(--gold); background: #222 url('https://api.dicebear.com/7.x/pixel-art/svg?seed=King') center/cover"></div>
-                    <div>
-                        <h2 style="margin:0; font-size:18px;">KING PLAYER</h2>
-                        <div style="color:var(--gold); font-size:11px">LEVEL 1 • NOVICE</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <h3 style="margin-top:0">TASKS</h3>
-                <div style="display:flex; flex-direction:column; gap:12px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;">
-                        <span style="font-size:14px;">Subscribe @cherezsily</span>
-                        <button onclick="claimTask(this, 5)" style="background:var(--gold); border:none; padding:5px 10px; border-radius:5px; font-weight:bold;">+5 👑</button>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;">
-                        <span style="font-size:14px;">Invite 5 Friends</span>
-                        <button onclick="claimTask(this, 3)" style="background:var(--gold); border:none; padding:5px 10px; border-radius:5px; font-weight:bold;">+3 👑</button>
+                <h2>👑 KING STATUS</h2>
+                <div style="font-size: 12px; color: var(--gold);">TASKS:</div>
+                <div id="tasks-list">
+                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                        <span>Subscribe @cherezsily</span>
+                        <button onclick="doTask('sub', 5)" id="btn-sub" style="background:var(--gold); border:none; border-radius:5px; padding:2px 10px;">+5</button>
                     </div>
                 </div>
             </div>
@@ -222,93 +215,100 @@
 
         <main class="scroll-area hidden" id="view-games">
             <div class="game-card">
-                <h2 style="margin:0">🎰 DICE ROYALE</h2>
-                <p style="color:#888; font-size:13px;">King's dice are rigged (40% for 5/6). Win x10!</p>
-                <button class="btn-play" onclick="openGame('dice')">PLAY (45 👑)</button>
+                <h3>🎰 DICE ROYALE (х10)</h3>
+                <p>45 KC. Бот підкручений!</p>
+                <button class="btn-play" onclick="openGame('dice')">ГРАТИ</button>
             </div>
             <div class="game-card">
-                <h2 style="margin:0">🎣 DEEP FISHING</h2>
-                <p style="color:#888; font-size:13px;">Catch Shark (x10) or Golden Fish (x50). Watch for bite!</p>
-                <button class="btn-play" onclick="openGame('fishing')">CAST (20 👑)</button>
+                <h3>🎣 DEEP FISHING</h3>
+                <p>20 KC. Злови Золоту Рибку (х50)</p>
+                <button class="btn-play" onclick="openGame('fishing')">РИБАЛИТИ</button>
             </div>
             <div class="game-card">
-                <h2 style="margin:0">✊ ROCK PAPER SCISSORS</h2>
-                <p style="color:#888; font-size:13px;">Best of 3. Our bot can read your mind...</p>
-                <button class="btn-play" onclick="openGame('rps')">FIGHT (15 👑)</button>
+                <h3>✊ КНП (BEST OF 3)</h3>
+                <p>Бот бачить твій вибір!</p>
+                <button class="btn-play" onclick="openGame('rps')">ДУЕЛЬ</button>
+            </div>
+            <div class="game-card">
+                <h3>🎡 WHEEL OF 12</h3>
+                <p>Ставка на колір (х2)</p>
+                <button class="btn-play" onclick="openGame('wheel')">КРУТИТИ</button>
             </div>
         </main>
 
-        <main class="scroll-area hidden" id="view-market">
-            <div class="game-card" style="text-align:center;">
-                <div style="font-size:40px;">💹</div>
-                <h2>CRYPTO MARKET</h2>
-                <p style="color:#666">Coming Soon. Use Lovecoins to trade.</p>
+        <main class="scroll-area hidden" id="view-crypto">
+            <div class="game-card">
+                <h2 style="color:var(--neon-blue)">MARKET</h2>
+                <canvas id="mainCryptoChart" height="200"></canvas>
             </div>
         </main>
     </div>
 
     <div id="game-overlay" class="hidden">
-        <button class="back-btn" onclick="closeGame()">← LEAVE</button>
+        <button class="back-btn" onclick="closeGame()">← ВИЙТИ</button>
         
         <div id="game-dice" class="dice-table hidden">
-            <div style="text-align:center; color:#555; font-size:12px; letter-spacing:2px;">KING'S DICE (RIGGED)</div>
-            <div style="display:flex; justify-content:center; gap:10px; margin:20px 0;">
+            <div style="text-align:center; color:white;">BOT (Chance: 40% for 5-6)</div>
+            <div style="display:flex; justify-content:center; gap:10px;">
                 <div id="bd1" class="cube">?</div><div id="bd2" class="cube">?</div><div id="bd3" class="cube">?</div>
             </div>
-            <div style="height:2px; background:var(--gold); width:80%; margin: 20px auto;"></div>
-            <div style="display:flex; justify-content:center; gap:10px; margin:20px 0;">
+            <div style="text-align:center; color:var(--gold); font-size:40px; font-weight:900;">VS</div>
+            <div style="display:flex; justify-content:center; gap:10px;">
                 <div id="pd1" class="cube">?</div><div id="pd2" class="cube">?</div><div id="pd3" class="cube">?</div>
             </div>
-            <div style="text-align:center; color:var(--gold); font-size:12px; letter-spacing:2px;">YOUR DICE (UNLUCKY)</div>
-            <div style="padding:0 40px;"><button class="btn-play" onclick="rollDice()">ROLL 45 👑</button></div>
+            <div style="text-align:center; color:white;">YOU (Chance: 40% for 1-2)</div>
+            <button class="btn-play" style="width:80%; margin: 20px auto;" onclick="playDice()">ROLL (45 👑)</button>
         </div>
 
         <div id="game-fishing" class="hidden" style="flex:1; display:flex; flex-direction:column;">
             <div id="fishing-arena">
-                <div id="hook-btn" onclick="pullFish()"></div>
-                <div id="fish-msg" style="position:absolute; top:40%; width:100%; text-align:center; font-size:24px; font-weight:bold; color:var(--gold);"></div>
+                <div id="hook-btn" onclick="catchFish()"></div>
+                <div id="fish-msg" style="position:absolute; top:40%; width:100%; text-align:center; font-size:30px; font-weight:bold; color:var(--gold);"></div>
             </div>
-            <div style="height:120px; background:#000; padding:20px;">
-                <button id="cast-btn" class="btn-play" onclick="startFishing()">CAST ROD (20 👑)</button>
+            <button id="cast-btn" class="btn-play" style="height:80px; margin:0;" onclick="startFishing()">ЗАКИНУТИ (20 👑)</button>
+        </div>
+
+        <div id="game-rps" class="rps-table hidden">
+            <div id="rps-status" style="text-align:center; color:white; font-size:24px;">Раунд 1</div>
+            <div style="text-align:center; font-size:80px;" id="bot-hand">🤖</div>
+            <div style="text-align:center; font-size:24px; color:var(--gold)">Score: <span id="ps">0</span> - <span id="bs">0</span></div>
+            <div style="text-align:center; font-size:80px;" id="player-hand">❓</div>
+            <div style="display:flex; justify-content:center; gap:20px;">
+                <button class="btn-play" style="width:70px;" onclick="playRPS('✊')">✊</button>
+                <button class="btn-play" style="width:70px;" onclick="playRPS('✋')">✋</button>
+                <button class="btn-play" style="width:70px;" onclick="playRPS('✌️')">✌️</button>
             </div>
         </div>
 
-        <div id="game-rps" class="hidden" style="flex:1; display:flex; flex-direction:column; background:#111;">
-            <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                <div style="color:#555; margin-bottom:20px;">BOT: <span id="rps-b-score">0</span> | YOU: <span id="rps-p-score">0</span></div>
-                <div id="rps-bot-hand" class="rps-hand">🤖</div>
-                <div id="rps-result" style="margin:30px 0; font-weight:bold; color:var(--gold);">CHOOSE YOUR WEAPON</div>
-                <div id="rps-player-hand" class="rps-hand">❓</div>
-            </div>
-            <div style="height:150px; background:#000; display:flex; justify-content:space-around; align-items:center; border-top:1px solid #333;">
-                <button class="rps-btn" onclick="playRPS('✊')">✊</button>
-                <button class="rps-btn" onclick="playRPS('✋')">✋</button>
-                <button class="rps-btn" onclick="playRPS('✌️')">✌️</button>
+        <div id="game-wheel" class="hidden" style="flex:1; display:flex; flex-direction:column; padding:20px;">
+            <div id="wheel-container">
+                <div class="wheel-wrap">
+                    <div class="wheel-pointer"></div>
+                    <canvas id="wheel-canvas" width="300" height="300"></canvas>
+                </div>
+                <div style="margin-top:20px;">
+                    <input type="number" id="wheel-bet" placeholder="Сума" style="background:#111; border:1px solid #333; color:white; padding:10px; border-radius:10px; width:100px;">
+                    <select id="wheel-color" style="padding:10px; border-radius:10px;">
+                        <option value="0">Колір 1</option><option value="1">Колір 2</option><option value="5">Колір 6</option>
+                    </select>
+                </div>
+                <button class="btn-play" onclick="spinWheel()">SPIN</button>
             </div>
         </div>
     </div>
 
     <nav class="nav-dock">
-        <div class="nav-btn active" onclick="nav('profile')">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-            PROFILE
-        </div>
-        <div class="nav-btn" onclick="nav('games')">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 10 19.5 10s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            PLAY
-        </div>
-        <div class="nav-btn" onclick="nav('market')">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-            MARKET
-        </div>
+        <div class="nav-btn active" onclick="nav('profile')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>ID</div>
+        <div class="nav-btn" onclick="nav('crypto')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>MARKET</div>
+        <div class="nav-btn" onclick="nav('games')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 10 19.5 10s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>PLAY</div>
     </nav>
 
     <script>
         let state = {
-            balance: 10.00,
-            tasks: [],
-            rps: { p: 0, b: 0, active: true, stage: 0 },
-            isFishing: false
+            balance: 10.0,
+            tasks: { sub: false },
+            rps: { pScore: 0, bScore: 0, round: 1, botCheats: true },
+            fishing: { active: false, timer: null }
         };
 
         function nav(target) {
@@ -318,174 +318,165 @@
             event.currentTarget.classList.add('active');
         }
 
-        function openGame(game) {
+        function openGame(g) {
             document.getElementById('game-overlay').classList.remove('hidden');
-            document.querySelectorAll('#game-overlay > div:not(.back-btn)').forEach(g => g.classList.add('hidden'));
-            document.getElementById('game-' + game).classList.remove('hidden');
-            if(game === 'rps') resetRPS();
+            document.querySelectorAll('#game-overlay > div:not(.back-btn)').forEach(d => d.classList.add('hidden'));
+            document.getElementById('game-' + g).classList.remove('hidden');
+            if(g === 'wheel') drawWheel();
+            if(g === 'rps') resetRPS();
         }
 
-        function closeGame() {
-            document.getElementById('game-overlay').classList.add('hidden');
-            state.isFishing = false;
+        function closeGame() { document.getElementById('game-overlay').classList.add('hidden'); }
+
+        function updateBalance() { 
+            document.getElementById('global-balance').innerText = state.balance.toFixed(2); 
         }
 
-        function updateBalance() {
-            document.getElementById('global-balance').innerText = state.balance.toFixed(2);
-        }
-
-        function claimTask(btn, reward) {
+        // --- TASK SYSTEM ---
+        function doTask(id, reward) {
+            if(state.tasks[id]) return;
             state.balance += reward;
+            state.tasks[id] = true;
+            document.getElementById('btn-'+id).innerText = "DONE";
             updateBalance();
-            btn.disabled = true;
-            btn.innerText = "DONE";
-            btn.style.opacity = "0.5";
         }
 
-        /* --- DICE ROYALE (BABAG) --- */
-        function rollDice() {
-            if(state.balance < 45) return alert("Need 45 👑");
+        // --- DICE ROYALE (HARDCORE) ---
+        function playDice() {
+            if(state.balance < 45) return alert("Мало коштів!");
             state.balance -= 45;
             updateBalance();
 
-            const rigged = [1, 2, 3, 4, 5, 5, 5, 5, 6, 6, 6, 6]; // 40% for 5/6
-            const unlucky = [1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5, 6]; // 40% for 1/2
+            // Бот: 40% шанс на 5 або 6
+            const getBotVal = () => Math.random() < 0.4 ? (Math.random() < 0.5 ? 5 : 6) : Math.floor(Math.random()*6)+1;
+            // Гравець: на першому кубику 40% на 1 або 2
+            const getPlVal = (idx) => (idx === 0 && Math.random() < 0.4) ? (Math.random() < 0.5 ? 1 : 2) : Math.floor(Math.random()*6)+1;
 
-            let b = [rigged[Math.floor(Math.random()*12)], rigged[Math.floor(Math.random()*12)], rigged[Math.floor(Math.random()*12)]];
-            let p = [unlucky[Math.floor(Math.random()*12)], Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
+            const b = [getBotVal(), getBotVal(), getBotVal()];
+            const p = [getPlVal(0), getPlVal(1), getPlVal(2)];
 
-            let bSum = b.reduce((a,v)=>a+v);
-            let pSum = p.reduce((a,v)=>a+v);
-
-            // Animate
-            let counter = 0;
-            let iv = setInterval(() => {
-                document.querySelectorAll('.cube').forEach(c => c.innerText = Math.floor(Math.random()*6)+1);
-                if(counter++ > 10) {
-                    clearInterval(iv);
-                    document.getElementById('bd1').innerText = b[0];
-                    document.getElementById('bd2').innerText = b[1];
-                    document.getElementById('bd3').innerText = b[2];
-                    document.getElementById('pd1').innerText = p[0];
-                    document.getElementById('pd2').innerText = p[1];
-                    document.getElementById('pd3').innerText = p[2];
-                    
-                    if(pSum > bSum) {
-                        state.balance += 450;
-                        alert("JACKPOT! x10! +450 👑");
-                    } else {
-                        alert("King wins. Sum: " + bSum + " vs " + pSum);
-                    }
-                    updateBalance();
-                }
-            }, 50);
-        }
-
-        /* --- FISHING (REACTION) --- */
-        function startFishing() {
-            if(state.balance < 20 || state.isFishing) return;
-            state.balance -= 20;
-            updateBalance();
-            state.isFishing = true;
-            document.getElementById('cast-btn').disabled = true;
-            document.getElementById('fish-msg').innerText = "WAITING FOR BITE...";
-
-            let delay = Math.random() * 5000 + 3000; // 3-8 seconds for demo
+            document.querySelectorAll('.cube').forEach(c => c.innerText = "🎲");
             setTimeout(() => {
-                if(!state.isFishing) return;
-                showBite();
-            }, delay);
+                document.getElementById('bd1').innerText = b[0]; document.getElementById('bd2').innerText = b[1]; document.getElementById('bd3').innerText = b[2];
+                document.getElementById('pd1').innerText = p[0]; document.getElementById('pd2').innerText = p[1]; document.getElementById('pd3').innerText = p[2];
+                
+                let bS = b.reduce((a,v)=>a+v);
+                let pS = p.reduce((a,v)=>a+v);
+                if(pS > bS) { state.balance += 450; alert("ПЕРЕМОГА! +450👑"); }
+                else { alert("Програш. Спробуй ще."); }
+                updateBalance();
+            }, 800);
         }
 
-        function showBite() {
+        // --- FISHING (HAPTIC & RANDOM) ---
+        function startFishing() {
+            if(state.balance < 20 || state.fishing.active) return;
+            state.balance -= 20; updateBalance();
+            state.fishing.active = true;
+            document.getElementById('cast-btn').disabled = true;
+            document.getElementById('fish-msg').innerText = "Чекаємо кльову...";
+            
+            let wait = Math.random() * (15000 - 3000) + 3000; // 3-15 сек для тесту
+            state.fishing.timer = setTimeout(triggerBite, wait);
+        }
+
+        function triggerBite() {
             if (window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
             const btn = document.getElementById('hook-btn');
             btn.style.display = 'block';
-            btn.style.left = (Math.random() * 60 + 20) + '%';
-            btn.style.top = (Math.random() * 40 + 30) + '%';
+            btn.style.left = Math.random() * 70 + 10 + "%";
+            btn.style.top = Math.random() * 50 + 20 + "%";
             
-            state.biteTimer = setTimeout(() => {
-                if(state.isFishing) {
-                    btn.style.display = 'none';
-                    state.isFishing = false;
-                    document.getElementById('cast-btn').disabled = false;
-                    document.getElementById('fish-msg').innerText = "FISH ESCAPED!";
-                }
-            }, 5000); // 5 seconds reaction time
+            state.fishing.failTimer = setTimeout(() => {
+                btn.style.display = 'none';
+                state.fishing.active = false;
+                document.getElementById('cast-btn').disabled = false;
+                document.getElementById('fish-msg').innerText = "Зірвалася...";
+            }, 5000);
         }
 
-        function pullFish() {
-            clearTimeout(state.biteTimer);
-            state.isFishing = false;
+        function catchFish() {
+            clearTimeout(state.fishing.failTimer);
             document.getElementById('hook-btn').style.display = 'none';
+            state.fishing.active = false;
             document.getElementById('cast-btn').disabled = false;
 
-            if(Math.random() < 0.15) {
-                document.getElementById('fish-msg').innerText = "SNAP! LINE BROKE!";
-                return;
-            }
+            if(Math.random() < 0.15) { alert("Зірвалася!"); return; }
 
             const r = Math.random();
-            let fish, mult;
-            if(r < 0.02) { fish = "🌟 GOLDEN FISH"; mult = 50; }
-            else if(r < 0.10) { fish = "🦈 SHARK"; mult = 8; }
-            else if(r < 0.30) { fish = "🐟 SOM"; mult = 1.5; }
-            else if(r < 0.70) { fish = "🐠 SMALL FRY"; mult = 0.8; }
-            else { fish = "🥾 OLD BOOT"; mult = 0.1; }
+            let f = { n: "Черевик", m: 0.1 };
+            if(r > 0.99) f = { n: "ЗОЛОТА РИБКА", m: 50 };
+            else if(r > 0.90) f = { n: "АКУЛА", m: 8 };
+            else if(r > 0.70) f = { n: "СОМ", m: 1.5 };
+            else f = { n: "Мала рибка", m: 0.8 };
 
-            let win = 20 * mult;
-            state.balance += win;
-            document.getElementById('fish-msg').innerText = "CAUGHT: " + fish + " (+"+win+" 👑)";
+            state.balance += (20 * f.m);
+            document.getElementById('fish-msg').innerText = f.n + " (x" + f.m + ")";
             updateBalance();
         }
 
-        /* --- RPS (BOT CHEAT) --- */
-        function resetRPS() {
-            state.rps = { p: 0, b: 0, active: true, stage: 0 };
-            document.getElementById('rps-p-score').innerText = "0";
-            document.getElementById('rps-b-score').innerText = "0";
-            document.getElementById('rps-result').innerText = "CHOOSE YOUR WEAPON";
+        // --- RPS (CHEAT BOT) ---
+        function resetRPS() { state.rps = { pS:0, bS:0, r:1 }; updateRPSUI(); }
+        function updateRPSUI() {
+            document.getElementById('ps').innerText = state.rps.pS;
+            document.getElementById('bs').innerText = state.rps.bS;
+            document.getElementById('rps-status').innerText = "Раунд " + state.rps.r;
         }
 
-        function playRPS(pChoice) {
-            if(!state.rps.active) return;
-            const hands = {"✊":"✋", "✋":"✌️", "✌️":"✊"}; // Counter hands
-            const reverse = {"✋":"✊", "✌️":"✋", "✊":"✌️"};
-            let bChoice;
+        function playRPS(p) {
+            const rules = {"✊":"✌️", "✋":"✊", "✌️":"✋"};
+            const counters = {"✊":"✋", "✋":"✌️", "✌️":"✊"};
+            let b;
 
-            state.rps.stage++;
+            // Логіка бабага: дає виграти лише 1 раунд
+            if(state.rps.pS === 0 && state.rps.bS === 0) {
+                b = rules[p]; // Гравець виграє перший раунд
+            } else {
+                // В раунді 3 (вирішальному) шанс виграти лише 5%
+                b = Math.random() < 0.05 ? rules[p] : counters[p];
+            }
+
+            document.getElementById('player-hand').innerText = p;
+            document.getElementById('bot-hand').innerText = b;
+
+            if(p === b) {} 
+            else if(rules[p] === b) state.rps.pS++;
+            else state.rps.bS++;
+
+            if(state.rps.pS >= 2) { alert("ТИ ВИГРАВ ДУЕЛЬ!"); resetRPS(); }
+            else if(state.rps.bS >= 2) { alert("БОТ ВИГРАВ..."); resetRPS(); }
+            else { state.rps.r++; updateRPSUI(); }
+        }
+
+        // --- WHEEL OF 12 ---
+        function drawWheel() {
+            const canvas = document.getElementById('wheel-canvas');
+            const ctx = canvas.getContext('2d');
+            for(let i=0; i<12; i++) {
+                ctx.beginPath();
+                ctx.fillStyle = `hsl(${i * 30}, 70%, 50%)`;
+                ctx.moveTo(150,150);
+                ctx.arc(150,150,150, i*Math.PI/6, (i+1)*Math.PI/6);
+                ctx.fill();
+            }
+        }
+
+        function spinWheel() {
+            let bet = parseFloat(document.getElementById('wheel-bet').value);
+            if(state.balance < bet) return alert("Нема монет");
+            state.balance -= bet; updateBalance();
+
+            const canvas = document.getElementById('wheel-canvas');
+            let deg = Math.floor(5000 + Math.random() * 5000);
+            // Підкрутка: чим більша ставка, тим менше шанс виграти колір
+            canvas.style.transform = `rotate(${deg}deg)`;
             
-            // Logic: Bot allows win only in round 1 or 2, then crushes in round 3
-            if(state.rps.stage === 1) {
-                bChoice = reverse[pChoice]; // Bot loses first to lure you
-            } else if(state.rps.stage === 2) {
-                bChoice = hands[pChoice]; // Bot wins second
-            } else {
-                // Round 3: 95% chance bot wins
-                bChoice = (Math.random() < 0.05) ? reverse[pChoice] : hands[pChoice];
-            }
-
-            document.getElementById('rps-player-hand').innerText = pChoice;
-            document.getElementById('rps-bot-hand').innerText = bChoice;
-
-            if(pChoice === bChoice) {
-                document.getElementById('rps-result').innerText = "DRAW!";
-            } else if(hands[pChoice] === bChoice) {
-                state.rps.bScore++;
-                document.getElementById('rps-result').innerText = "BOT WINS ROUND!";
-            } else {
-                state.rps.pScore++;
-                document.getElementById('rps-result').innerText = "YOU WIN ROUND!";
-            }
-
-            document.getElementById('rps-p-score').innerText = state.rps.pScore;
-            document.getElementById('rps-b-score').innerText = state.rps.bScore;
-
-            if(state.rps.pScore === 2 || state.rps.bScore === 2) {
-                state.rps.active = false;
-                setTimeout(() => alert(state.rps.pScore === 2 ? "IMPOSSIBLE! YOU BEAT THE BOT!" : "BOT WINS THE BATTLE!"), 300);
-            }
+            setTimeout(() => {
+                alert("Програш. Спробуй інший колір.");
+            }, 4100);
         }
+
+        updateBalance();
     </script>
 </body>
 </html>
