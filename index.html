@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KingMoney & Lovecoin App</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --gold: #FFD700;
+            --dark-gold: #B8860B;
+            --bg: #0f0f0f;
+            --card: rgba(255, 255, 255, 0.05);
+            --accent: #ff2d55;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a1a1a, var(--bg));
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .balance-card {
+            display: inline-block;
+            background: var(--card);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .king-money-icon {
+            color: var(--gold);
+            font-size: 1.2em;
+            margin-right: 5px;
+            filter: drop-shadow(0 0 5px var(--gold));
+        }
+
+        /* Main Content */
+        .content-container {
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Styles */
+        .glass-card {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Lovecoin Chart */
+        #chartWrapper { height: 200px; width: 100%; margin: 15px 0; }
+        .price-up { color: #00ff88; }
+        .price-down { color: #ff3b30; }
+
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(15, 15, 15, 0.95);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            text-align: center;
+            font-size: 0.7em;
+            color: #888;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--gold);
+            transform: scale(1.1);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-buy { background: #00ff88; color: #000; }
+        .btn-sell { background: #ff3b30; color: #fff; }
+        .btn-gold { 
+            background: linear-gradient(45deg, var(--dark-gold), var(--gold)); 
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        /* Dice Game */
+        .dice-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .dice {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: black;
+            border-radius: 8px;
+            line-height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="balance-card">
+            <span class="king-money-icon">👑</span>
+            <span id="balance">1000.00</span>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div id="profile" class="tab-content active">
+            <div class="glass-card" style="text-align: center;">
+                <div style="width: 80px; height: 80px; background: var(--gold); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 40px;">🤴</div>
+                <h2>King Player</h2>
+                <p style="color: #888;">ID: 777654321</p>
+            </div>
+            <div class="glass-card">
+                <h3>Завдання</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span>Підписка @cherezsily</span>
+                    <button class="btn-gold" style="width:auto; padding:5px 15px; font-size:12px;" onclick="claimQuest(5)">+5</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="crypto" class="tab-content">
+            <div class="glass-card">
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="font-size: 1.2em; font-weight: bold;">Lovecoin❤️</span>
+                    <span id="priceLabel" class="price-up">$1.45</span>
+                </div>
+                <div id="chartWrapper">
+                    <canvas id="loveChart"></canvas>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn btn-buy" onclick="trade('buy')">КУПИТИ</button>
+                    <button class="btn btn-sell" onclick="trade('sell')">ПРОДАТИ</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="games" class="tab-content">
+            <div class="glass-card">
+                <h3>🎲 Кубики (х10)</h3>
+                <p style="font-size: 0.8em; color: #888;">Ставка: 45 KingMoney</p>
+                <div class="dice-container">
+                    <div id="d1" class="dice">?</div>
+                    <div id="d2" class="dice">?</div>
+                    <div id="d3" class="dice">?</div>
+                </div>
+                <button class="btn btn-gold" onclick="playDice()">КИДАТИ (45 👑)</button>
+            </div>
+            
+            <div class="glass-card">
+                <h3>🎣 Риболовля</h3>
+                <p>Закинь вудку та чекай кльову...</p>
+                <button class="btn btn-gold">ЗАКИНУТИ ВУДКУ (20 👑)</button>
+            </div>
+        </div>
+
+        <div id="safe" class="tab-content">
+            <div class="glass-card" style="text-align: center;">
+                <div style="font-size: 50px;">🔒</div>
+                <h3>Заморозка на 4 місяці</h3>
+                <p style="color: #888; font-size: 0.9em;">Шанс 15% на бонус +3%<br>Шанс 85% на повернення суми</p>
+                <input type="number" placeholder="Сума..." style="width:100%; padding:10px; border-radius:8px; border:none; margin: 10px 0;">
+                <button class="btn btn-gold" disabled>ЗАМОРОЗИТИ</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-item active" onclick="showTab('profile', this)">
+            <span class="nav-icon">👤</span>Профіль
+        </div>
+        <div class="nav-item" onclick="showTab('crypto', this)">
+            <span class="nav-icon">📈</span>Крипта
+        </div>
+        <div class="nav-item" onclick="showTab('games', this)">
+            <span class="nav-icon">🎮</span>Ігри
+        </div>
+        <div class="nav-item" onclick="showTab('safe', this)">
+            <span class="nav-icon">💰</span>Сейф
+        </div>
+    </nav>
+
+    <script>
+        let balance = 1000.00;
+        let currentPrice = 1.45;
+        let chart;
+
+        // Навігація
+        function showTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+            if(tabId === 'crypto') initChart();
+        }
+
+        // Графік Lovecoin (оновлення кожні 5 сек)
+        function initChart() {
+            if(chart) return;
+            const ctx = document.getElementById('loveChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array(20).fill(''),
+                    datasets: [{
+                        data: Array(20).fill(1.45),
+                        borderColor: '#00ff88',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    scales: { y: { display: false }, x: { display: false } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            setInterval(() => {
+                let change = (Math.random() - 0.5) * 0.1;
+                currentPrice = Math.max(0.1, currentPrice + change);
+                const color = change >= 0 ? '#00ff88' : '#ff3b30';
+                
+                document.getElementById('priceLabel').innerText = `$${currentPrice.toFixed(2)}`;
+                document.getElementById('priceLabel').className = change >= 0 ? 'price-up' : 'price-down';
+                
+                chart.data.datasets[0].data.push(currentPrice);
+                chart.data.datasets[0].data.shift();
+                chart.data.datasets[0].borderColor = color;
+                chart.update();
+            }, 5000);
+        }
+
+        // Логіка кубиків (з твоїми шансами)
+        function playDice() {
+            if(balance < 45) return alert("Недостатньо KingMoney!");
+            balance -= 45;
+            updateBalance();
+
+            const botPool = [1, 2, 3, 4, 5, 5, 5, 6, 6, 6]; // Підкручено 5-6 (40%)
+            const playerLucky = [1, 1, 1, 2, 2, 2, 3, 4, 5, 6]; // Підкручено 1-2 (39%)
+            const normal = [1, 2, 3, 4, 5, 6];
+
+            const botRolls = [rb(botPool), rb(botPool), rb(botPool)];
+            const playerRolls = [rb(playerLucky), rb(normal), rb(normal)];
+
+            const botSum = botRolls.reduce((a, b) => a + b);
+            const playerSum = playerRolls.reduce((a, b) => a + b);
+
+            // Анімація
+            let counter = 0;
+            const anim = setInterval(() => {
+                document.getElementById('d1').innerText = Math.floor(Math.random()*6)+1;
+                document.getElementById('d2').innerText = Math.floor(Math.random()*6)+1;
+                document.getElementById('d3').innerText = Math.floor(Math.random()*6)+1;
+                if(counter++ > 10) {
+                    clearInterval(anim);
+                    document.getElementById('d1').innerText = playerRolls[0];
+                    document.getElementById('d2').innerText = playerRolls[1];
+                    document.getElementById('d3').innerText = playerRolls[2];
+                    
+                    if(playerSum > botSum) {
+                        let win = 45 * 10;
+                        balance += win;
+                        alert(`ПЕРЕМОГА! Твій рахунок: ${playerSum}, Бот: ${botSum}. Виграш: ${win} 👑`);
+                    } else {
+                        alert(`ПРОГРАШ. Твій рахунок: ${playerSum}, Бот: ${botSum}.`);
+                    }
+                    updateBalance();
+                }
+            }, 50);
+        }
+
+        function rb(pool) { return pool[Math.floor(Math.random() * pool.length)]; }
+        function updateBalance() { document.getElementById('balance').innerText = balance.toFixed(2); }
+        function claimQuest(amt) { balance += amt; updateBalance(); alert("Бонус отримано!"); }
+    </script>
+</body>
+</html>
